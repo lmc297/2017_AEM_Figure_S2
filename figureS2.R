@@ -1,23 +1,16 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# Supplemental Figure S2 for 2017 AEM Paper
 
 library(shiny)
 library(ggplot2)
 
-# Define UI for application that draws a histogram
+# Define UI for application 
 ui <- fluidPage(
    
    # Application title
    titlePanel(h1("Supplemental Figure S2")),
    
    
-   # Sidebar with a slider input for number of bins 
+   # Sidebar 
    sidebarLayout(position="right",
       sidebarPanel(
         helpText("Select a Salmonella antimicrobial resistance (AMR) data set to visualize."),
@@ -48,7 +41,7 @@ ui <- fluidPage(
                              label="Remove outlier isolate (HUM_DUBN_WA_10_R9_3256) from data set",
                         FALSE))),
       
-      # Show a plot of the generated distribution
+      # Show a plot 
       mainPanel(
       plotOutput("plot", click="plotclick",
                  dblclick ="plotdb",
@@ -59,7 +52,7 @@ ui <- fluidPage(
    )
 )
 
-# Define server logic required to draw a histogram
+# Define server logic 
 server <- function(input, output) {
   ranges <- reactiveValues(x = NULL, y = NULL)
 
@@ -69,61 +62,41 @@ server <- function(input, output) {
       newplot<-ggplot()  
       newplot<-newplot+geom_polygon(data=hull.data,
                                     aes_string(x="NMDS1",y="NMDS2",group=appgroup,colour=appgroup,fill=appgroup),
-                                    alpha=0.30) + # add the convex hulls
+                                    alpha=0.30) + 
         scale_fill_manual(values=c("green","blue","red"))+
-        #geom_text(data=species.scores,aes(x=NMDS1,y=NMDS2,label=species),alpha=0.5,size=3) +  # add the species labels
-        geom_point(data=nmds.scores,aes_string(x="NMDS1",y="NMDS2",shape=appgroup,colour=appgroup),size=2)+  # add the point markers
-        ##geom_text(data=nmds.scores,aes(x=NMDS1,y=NMDS2,label=site),size=8,vjust=0,hjust=0) +
-        #geom_text_repel(data=nmds.scores,aes(x=NMDS1,y=NMDS2,label=site),size=3) +  # add the site labels
-        # add the site labels
+        geom_point(data=nmds.scores,aes_string(x="NMDS1",y="NMDS2",shape=appgroup,colour=appgroup),size=2)+  
         scale_colour_manual(values=c("Typhimurium" = "red", "Newport" = "blue", "Dublin" = "green")) +
         coord_cartesian(xlim = ranges$x, ylim = ranges$y)
-        #coord_equal()
       return(newplot)}
       if (appgroup=="Source"){
         newplot<-ggplot()  
         newplot<-newplot+geom_polygon(data=hull.data,
                                       aes(x=NMDS1,y=NMDS2,group=Source,colour=Source,fill=Source),
-                                      alpha=0.30) + # add the convex hulls
+                                      alpha=0.30) + 
           scale_fill_manual(values=c("blue","red"))+
-          #geom_text(data=species.scores,aes(x=NMDS1,y=NMDS2,label=species),alpha=0.5,size=3) +  # add the species labels
-          geom_point(data=nmds.scores,aes(x=NMDS1,y=NMDS2,shape=Source,colour=Source),size=2)+  # add the point markers
-        ##geom_text(data=nmds.scores,aes(x=NMDS1,y=NMDS2,label=site),size=8,vjust=0,hjust=0) +
-        #geom_text_repel(data=nmds.scores,aes(x=NMDS1,y=NMDS2,label=site),size=3) +  # add the site labels
-        # add the site labels
+          geom_point(data=nmds.scores,aes(x=NMDS1,y=NMDS2,shape=Source,colour=Source),size=2)+  
         scale_colour_manual(values=c("Bovine" = "blue", "Human" = "red")) +
           coord_cartesian(xlim = ranges$x, ylim = ranges$y)
-        #coord_equal()
         return(newplot)}
       if (appgroup=="Geo"){
         newplot<-ggplot()  
         newplot<-newplot+geom_polygon(data=hull.data,
                                       aes(x=NMDS1,y=NMDS2,group=Geo,colour=Geo,fill=Geo),
-                                      alpha=0.30) + # add the convex hulls
+                                      alpha=0.30) + 
           scale_fill_manual(values=c("purple","green"))+
-          #geom_text(data=species.scores,aes(x=NMDS1,y=NMDS2,label=species),alpha=0.5,size=3) +  # add the species labels
-          geom_point(data=nmds.scores,aes(x=NMDS1,y=NMDS2,shape=Geo,colour=Geo),size=2) + # add the point markers
-        ##geom_text(data=nmds.scores,aes(x=NMDS1,y=NMDS2,label=site),size=8,vjust=0,hjust=0) +
-        #geom_text_repel(data=nmds.scores,aes(x=NMDS1,y=NMDS2,label=site),size=3) +  # add the site labels
-        # add the site labels
+          geom_point(data=nmds.scores,aes(x=NMDS1,y=NMDS2,shape=Geo,colour=Geo),size=2) + 
         scale_colour_manual(values=c("NY" = "purple", "WA" = "green")) +
           coord_cartesian(xlim = ranges$x, ylim = ranges$y)
-          #coord_equal()
         return(newplot)}
       if (appgroup=="Group"){
         newplot<-ggplot()  
         newplot<-newplot+geom_polygon(data=hull.data,
                                       aes(x=NMDS1,y=NMDS2,group=Group,colour=Group,fill=Group),
-                                      alpha=0.30) + # add the convex hulls
+                                      alpha=0.30) + 
           scale_fill_manual(values=c("green","purple","deeppink1","darkorange1"))+
-          #geom_text(data=species.scores,aes(x=NMDS1,y=NMDS2,label=species),alpha=0.5,size=3) +  # add the species labels
-          geom_point(data=nmds.scores,aes(x=NMDS1,y=NMDS2,shape=Group,colour=Group),size=2) + # add the point markers
-          ##geom_text(data=nmds.scores,aes(x=NMDS1,y=NMDS2,label=site),size=8,vjust=0,hjust=0) +
-          #geom_text_repel(data=nmds.scores,aes(x=NMDS1,y=NMDS2,label=site),size=3) +  # add the site labels
-          # add the site labels
+          geom_point(data=nmds.scores,aes(x=NMDS1,y=NMDS2,shape=Group,colour=Group),size=2) + 
           scale_colour_manual(values=c("Bovine NY" = "green", "Human NY" = "deeppink1","Bovine WA" = "purple", "Human WA" = "darkorange1")) +
           coord_cartesian(xlim = ranges$x, ylim = ranges$y)
-          #coord_equal()
         return(newplot)}
         
     
@@ -131,13 +104,8 @@ server <- function(input, output) {
     else{
       zeroplot<-ggplot()  
       zeroplot<-zeroplot+
-        geom_point(data=nmds.scores,aes(x=NMDS1,y=NMDS2),size=2) + # add the point markers
+        geom_point(data=nmds.scores,aes(x=NMDS1,y=NMDS2),size=2) +
         coord_cartesian(xlim = ranges$x, ylim = ranges$y)
-        #geom_text(data=nmds.scores,aes(x=NMDS1,y=NMDS2,label=site),size=8,vjust=0,hjust=0) +
-        #geom_text_repel(data=nmds.scores,aes(x=NMDS1,y=NMDS2,label=site),size=3) +  # add the site labels
-        # add the site labels
-        #scale_colour_manual(values=c("Typhimurium" = "red", "Newport" = "blue", "Dublin" = "green")) +
-        #coord_equal() 
         return(zeroplot)
     }
   }
@@ -157,7 +125,6 @@ server <- function(input, output) {
   }
 
   
-  #output$plot <- reactivePlot(function(){
   output$plot <- renderPlot({
   if (input$serotype==1){
     insero<-"_sero_"
@@ -217,11 +184,11 @@ server <- function(input, output) {
   if (input$dataset=="Plasmid Replicon Presence/Absence"){
     indata<-"plasmid"
   }
-      nmdsfile<-paste("/Users/lmcarrol/Documents/wsu/manuscript/december16/WSU_plots/nmds",insero,indata,"_points.txt",sep="")
+      nmdsfile<-paste("nmds",insero,indata,"_points.txt",sep="")
       nmds.scores<-read.delim(nmdsfile,sep="\t")
       appgroup<-appgroup
       if (hullval!=0){
-      hullfile<-paste("/Users/lmcarrol/Documents/wsu/manuscript/december16/WSU_plots/nmds",insero,indata,"_",hullval,".txt",sep="")
+      hullfile<-paste("nmds",insero,indata,"_",hullval,".txt",sep="")
       hull.data<-read.delim(hullfile,sep="\t")
       if (appgroup=="Geo" && "State"%in%names(hull.data)){
         hull.data$Geo<-hull.data$State
@@ -231,7 +198,7 @@ server <- function(input, output) {
       }
       plot<-p(nmds.scores=nmds.scores,hull.data = hull.data,appgroup = appgroup)
       plot
-      #print(plot)
+   
 
       })
   
@@ -291,7 +258,7 @@ server <- function(input, output) {
     if (input$dataset=="Plasmid Replicon Presence/Absence"){
       indata<-"plasmid"
     }
-    nmdsfile<-paste("/Users/lmcarrol/Documents/wsu/manuscript/december16/WSU_plots/nmds",insero,indata,"_points.txt",sep="")
+    nmdsfile<-paste("nmds",insero,indata,"_points.txt",sep="")
     nmds.scores<-read.delim(nmdsfile,sep="\t")
     if (input$serotype==1){
     nmds.final<-cbind(nmds.scores[,4:6],nmds.scores[,1:2])
@@ -317,10 +284,6 @@ server <- function(input, output) {
   }
 
     
-   
-  #})
-     
-#}
 
 # Run the application 
 shinyApp(ui = ui, server = server)
